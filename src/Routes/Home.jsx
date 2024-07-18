@@ -4,21 +4,21 @@ import TopBar from "../Components/Topbar";
 import Content from "../Components/Content";
 import Footer from "../Components/Footer";
 
-function Home() {
+export default function Home() {
   const [isauthenticated,setisauthenticated] = useState('False');
   useEffect(()=>{
     const a =localStorage.getItem('token');
     if(a){
       setisauthenticated('True');
     }
+    console.log("ghar");
   },[])
   return (
     <div>
       <TopBar LoggedIn = {isauthenticated}/>
       <Content/>
-      <Footer/>
+      {/* <Footer/>  */}
     </div>
   )
 }
 
-export default Home
