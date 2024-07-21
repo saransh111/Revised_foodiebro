@@ -8,6 +8,9 @@ export default function TopBar(props){
     function registerbutton(){
         navigate('/register')
     }
+    function mycartbutton(){
+        navigate('/Cart')
+    }
     return(
         <div>
             <div className="flex flex row">
@@ -20,6 +23,7 @@ export default function TopBar(props){
             <div>
                 <div>Hi {localStorage.getItem('user')?localStorage.getItem('user').name:'User'}</div>
                 <button>Sign Out</button>
+                <button onClick={mycartbutton}>My Cart</button>
             </div>}
             </div>
         </div>
