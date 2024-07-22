@@ -7,6 +7,7 @@ export default function Login(){
     const navigate = useNavigate();
     const onSubmit = data => {
         console.log(data);
+        
         if(localStorage.getItem('token')){
             navigate('/');
         }

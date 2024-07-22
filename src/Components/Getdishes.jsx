@@ -11,7 +11,11 @@ export default function Getdishes(props) {
     <div>
       <ul>
         {
-            dishes && dishes.map((dish) => <li key={dish.idMeal}>{dish.strMeal}<button>Add to Cart</button></li>) 
+            dishes && dishes.map((dish) => 
+                <div>
+                    <span>{dish.strMeal+"  "}{dish.strTags+"  "}
+                    <button>Add to Cart</button></span>
+                </div>) 
         }
       </ul>
     </div>
