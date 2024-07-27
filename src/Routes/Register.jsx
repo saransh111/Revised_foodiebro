@@ -1,37 +1,39 @@
 import { useForm } from "react-hook-form";
 import { useNavigate } from 'react-router-dom';
-import { account } from "../Appwrite/appwriteConfig";
+import authService from "../Appwrite/auth"
 import {v4} from "uuid";
+import { useState } from "react";
+
 
 export default function App() {
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
+  const [error,setError] =useState("");
   const onSubmit = async (data) => {
-        console.log(data);
-        if(data.Password===data.ReType_Password){
-            const Promise = await account.create(
-              v4(),
-              data.firstName,
-              data.lastName,
-              data.Email,
-              data.Password
-            )
-            Promise.then(
-              function(response){
-                console.log(response);
-              },
-              function(error){
-                console.log("lorermsfdngvjkdfbjhkdfbgjkhdfbjuyl");
-                console.log(error);
-              }
-            )
-            console.log(data);
-            navigate('/');
+    console.log(data);
+    if(data.Password===data.ReType_Password){
+      try {
+        const userData = await authService.createAccount({
+          name: data.firstName,
+          email: data.Email,
+          password: data.Password,
+        })
+        console.log(userData);
+        if (userData) {
+            const userData = await authService.getCurrentUser()
+            if(userData) dispatch(login(userData));
+            console.log(userData);
+            navigate("/")
         }
-        else{
-            alert("Passwords Do Not Match");
-        }
-    };
+    } catch (error) {
+        console.log(error);
+        setError(error.message)
+    }
+    }
+    else{
+      alert("Passwords do Not Match");
+    }
+  };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <input placeholder="First Name" {...register("firstName", { required: true, maxLength: 20 })} />
