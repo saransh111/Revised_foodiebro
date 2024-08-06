@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import cartService from "../Appwrite/CartService";
 
 export default function Getdishes(props) {
   const [dishes, setDishes] = useState(null);
@@ -6,7 +7,18 @@ export default function Getdishes(props) {
   useEffect(() => {
     setDishes(props.dishes);
   }, [props.dishes]);
-
+  async function foodadder(dishname){
+    const user = localStorage.getItem('user');
+    if (user) {
+      const userDetails = JSON.parse(localStorage.getItem('user'));
+      console.log(userDetails.email);
+      console.log(dishname);
+      await cartService.addtocart(userDetails.email, dishname,100);
+    }
+    else{
+        alert("you are not logged in ");
+    }
+  }
   return (
     <div>
       <ul>
@@ -14,7 +26,8 @@ export default function Getdishes(props) {
             dishes && dishes.map((dish) => 
                 <div>
                     <span>{dish.strMeal+"  "}{dish.strTags+"  "}
-                    <button>Add to Cart</button></span>
+                    <button onClick={() => foodadder(dish.strMeal)}>Add to Cart</button>
+                    </span>
                 </div>) 
         }
       </ul>
