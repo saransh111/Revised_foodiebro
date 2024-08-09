@@ -3,6 +3,7 @@ import TopBar from "../Components/Topbar";
 import Content from "../Components/Content";
 import Footer from "../Components/Footer";
 import authService from "../Appwrite/auth";
+import ExpandingButton from "../Components/ExpandingButton";
 
 export default function Home() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -31,7 +32,8 @@ export default function Home() {
     <div>
       <TopBar LoggedIn={isAuthenticated} />
       <Content />
-      {/* <Footer /> */}
+      <ExpandingButton/>
+      <Footer />
     </div>
   );
 }
