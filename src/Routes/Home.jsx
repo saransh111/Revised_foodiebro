@@ -1,20 +1,30 @@
-import { useEffect, useState } from "react"
-import axios from 'axios'
+import { useEffect, useState } from "react";
 import TopBar from "../Components/Topbar";
 import Content from "../Components/Content";
 import Footer from "../Components/Footer";
+import authService from "../Appwrite/auth";
 
 export default function Home() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    console.log("Checking authentication status");
-    const user = localStorage.getItem('user');
-    if (user) {
-      console.log("ho gaya")
-      setIsAuthenticated(true);
+    async function checkAuthentication() {
+      console.log("Checking authentication status");
+      try {
+        const user = await authService.getCurrentUser();
+        if (user) {
+          console.log("User is authenticated");
+          setIsAuthenticated(true);
+        } else {
+          console.log("User is not authenticated");
+        }
+      } catch (error) {
+        console.error("Failed to fetch user data", error);
+      }
+      console.log("Authentication check complete");
     }
-    console.log("Authentication check complete");
+
+    checkAuthentication();
   }, []);
 
   return (
@@ -25,4 +35,3 @@ export default function Home() {
     </div>
   );
 }
-
