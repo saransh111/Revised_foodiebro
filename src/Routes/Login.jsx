@@ -25,6 +25,7 @@ export default function Login() {
     }
   };
   function handleregister(){
+    console.log("registerclicked")
     navigate("/register");
   }
 
@@ -57,13 +58,6 @@ export default function Login() {
           >
             Login
           </button>
-          <button
-            type="submit"
-            className="w-full px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            onClick={()=> handleregister}
-          >
-            Register
-          </button>
           <button class="flex items-center justify-center w-full max-w-xs mx-auto bg-white border border-gray-300 text-gray-700 font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors duration-300">
             <svg class="w-6 h-6 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
               <path fill="#4285F4" d="M46.04 24.3c0-1.54-.14-3-.38-4.44H24v8.4h12.44c-.54 2.82-2.1 5.2-4.46 6.8v5.64h7.18c4.22-3.88 6.68-9.6 6.68-16.4z"/>
@@ -76,6 +70,12 @@ export default function Login() {
 
           {error && <p className="text-red-500 mt-4 text-center">{error}</p>}
         </form>
+        <button
+            className="w-full px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            onClick={handleregister}
+          >
+            Register
+          </button>
       </div>
     </div>
   );
