@@ -24,6 +24,9 @@ export default function Login() {
       setError("Login failed. Please check your email and password.");
     }
   };
+  function handleregister(){
+    navigate("/register");
+  }
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -53,6 +56,13 @@ export default function Login() {
             className="w-full px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             Login
+          </button>
+          <button
+            type="submit"
+            className="w-full px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            onClick={()=> handleregister}
+          >
+            Register
           </button>
           <button class="flex items-center justify-center w-full max-w-xs mx-auto bg-white border border-gray-300 text-gray-700 font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-colors duration-300">
             <svg class="w-6 h-6 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">

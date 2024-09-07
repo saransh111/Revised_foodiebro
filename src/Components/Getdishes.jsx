@@ -14,7 +14,8 @@ export default function Getdishes(props) {
     if (user) {
       console.log(user.email);
       console.log(dishName);
-      await cartService.addtocart(user.email, dishName, 100);
+      console.log("machuwefh");
+      await cartService.addtocart(user.email, dishName, 112);
     } else {
       alert("You are not logged in.");
     }

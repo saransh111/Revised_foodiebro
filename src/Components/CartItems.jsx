@@ -2,6 +2,23 @@ import { useEffect, useState } from "react";
 import cartService from "../Appwrite/CartService";
 import StripeCheckout from "react-stripe-checkout";
 import authService from "../Appwrite/auth";
+import {
+  Container,
+  Typography,
+  List,
+  ListItem,
+  ListItemText,
+  Button,
+  IconButton,
+  Paper,
+  Box,
+  Divider,
+  Grid,
+  Avatar,
+} from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 export default function CartItems() {
   const [cartItems, setCartItems] = useState([]);
@@ -10,12 +27,41 @@ export default function CartItems() {
   async function fetchCartItems(email) {
     try {
       const items = await cartService.getCart(email);
-      setCartItems(items);
-
+      const mp = new Map();
+      let mycart = [];
+      for (let i = 0; i < items.length; i++) {
+        if (mp.get(items[i].DishName) === 1) {
+          for (let j = 0; j < mycart.length; j++) {
+            if (mycart[j].dishname === items[i].DishName) {
+              mycart[j].quantity = mycart[j].quantity + 1;
+              mycart[j].price = mycart[j].price * mycart[j].quantity;
+            }
+          }
+        } else {
+          mp.set(items[i].DishName, 1);
+          mycart.push({
+            dishname: items[i].DishName,
+            price: items[i].Price,
+            quantity: 1,
+          });
+        }
+      }
+      setCartItems(mycart);
+      console.log(mycart);
       let sum = items.reduce((acc, item) => acc + item.Price, 0);
       setTotalCost(sum);
     } catch (error) {
       console.error("Failed to fetch cart items", error);
+    }
+  }
+
+  async function foodAdder(dishName, price) {
+    const user = await authService.getCurrentUser();
+    if (user) {
+      await cartService.addtocart(user.email, dishName, Math.ceil(Number(price)));
+      fetchCartItems(user.email); // Refresh cart items after adding
+    } else {
+      alert("You are not logged in.");
     }
   }
 
@@ -37,13 +83,13 @@ export default function CartItems() {
       }
     }
     fetchUserData();
-  }, []);
+  }, []); // Fetch data on mount only
 
   async function removeItemFromCart(dish) {
     try {
       const user = await getEmail();
-      await cartService.deleteItemFromCart(user.email, dish);
-      fetchCartItems(user.email);
+      await cartService.DeleteItemFromCart(user.email, dish);
+      fetchCartItems(user.email); // Refresh cart items after removing
     } catch (error) {
       console.error("Failed to remove item from cart", error);
     }
@@ -65,7 +111,6 @@ export default function CartItems() {
     })
       .then(response => {
         setRes("true");
-        console.log("RESPONSE ", response);
         const { status } = response;
         console.log("STATUS ", status);
       })
@@ -73,46 +118,94 @@ export default function CartItems() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6 bg-gray-50 rounded-lg shadow-lg">
-      <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">Your Cart</h2>
-      <ul className="space-y-4">
-        {cartItems && cartItems.length > 0 ? (
-          cartItems.map((cartItem, index) => (
-            <li
-              key={index}
-              className="flex items-center justify-between p-4 bg-white shadow-sm rounded-lg hover:shadow-md transition-shadow duration-300"
-            >
-              <span className="text-lg font-semibold text-gray-700">{cartItem.DishName}</span>
-              <span className="text-gray-500">${cartItem.Price.toFixed(2)}</span>
-              <button
-                onClick={() => removeItemFromCart(cartItem.DishName)}
-                className="bg-red-500 hover:bg-red-600 text-white font-semibold py-1 px-3 rounded-lg transition-colors duration-300"
+    <Container maxWidth="md" sx={{ mt: 4 }}>
+      <Paper elevation={3} sx={{ p: 4 }}>
+        <Box display="flex" alignItems="center" justifyContent="center" mb={3}>
+          <ShoppingCartIcon fontSize="large" color="primary" />
+          <Typography variant="h4" ml={2}>
+            Your Cart
+          </Typography>
+        </Box>
+        <List>
+          {cartItems.length > 0 ? (
+            cartItems.map((cartItem, index) => (
+              <div key={index}>
+                <ListItem>
+                  <Grid container alignItems="center">
+                    <Grid item xs={4}>
+                      <Avatar
+                        alt={cartItem.dishname}
+                        src={`https://via.placeholder.com/150?text=${cartItem.dishname}`}
+                        sx={{ width: 60, height: 60 }}
+                      />
+                    </Grid>
+                    <Grid item xs={3}>
+                      <ListItemText
+                        primary={cartItem.dishname}
+                        secondary={`Price: $${(cartItem.price / cartItem.quantity).toFixed(2)}`}
+                      />
+                    </Grid>
+                    <Grid item xs={2}>
+                      <Typography variant="body2" color="textSecondary">
+                        Quantity: {cartItem.quantity}
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={3}>
+                      <IconButton
+                        color="primary"
+                        onClick={() => foodAdder(cartItem.dishname, cartItem.price / cartItem.quantity)}
+                      >
+                        <AddIcon />
+                      </IconButton>
+                      <IconButton
+                        color="secondary"
+                        onClick={() => removeItemFromCart(cartItem.dishname)}
+                      >
+                        <RemoveIcon />
+                      </IconButton>
+                    </Grid>
+                  </Grid>
+                </ListItem>
+                <Divider />
+              </div>
+            ))
+          ) : (
+            <ListItem>
+              <Typography variant="body1" color="textSecondary" align="center" sx={{ width: "100%" }}>
+                Your cart is empty.
+              </Typography>
+            </ListItem>
+          )}
+        </List>
+        <Box mt={4}>
+          <Grid container justifyContent="space-between" alignItems="center">
+            <Grid item>
+              <Typography variant="h5" color="primary">
+                TOTAL: ${totalCost.toFixed(2)}
+              </Typography>
+            </Grid>
+            <Grid item>
+              <StripeCheckout
+                stripeKey="pk_test_51JyhF1SGZNht59Jn6x8w9LRZ5lncxOdJ8UfhQLGSoBUyNpREgVCUqCrjJ8Dvz8gzCSgFzboGehYoORlzEaLdGU9l007s2U5PrZ"
+                token={makePayment}
+                name="BILL PAYMENT"
+                amount={totalCost * 100} // Stripe expects the amount in cents
+                shippingAddress
+                billingAddress
               >
-                Remove
-              </button>
-            </li>
-          ))
-        ) : (
-          <li className="text-center text-gray-500 py-4">Your cart is empty.</li>
-        )}
-      </ul>
-      <div className="flex justify-between items-center mt-6 p-4 bg-white shadow-sm rounded-lg">
-        <div>
-          <span className="text-xl font-bold text-gray-700">TOTAL: ${totalCost.toFixed(2)}</span>
-        </div>
-        <StripeCheckout
-          stripeKey="pk_test_51JyhF1SGZNht59Jn6x8w9LRZ5lncxOdJ8UfhQLGSoBUyNpREgVCUqCrjJ8Dvz8gzCSgFzboGehYoORlzEaLdGU9l007s2U5PrZ"
-          token={makePayment}
-          name="BILL PAYMENT"
-          amount={totalCost * 100} // Stripe expects the amount in cents
-          shippingAddress
-          billingAddress
-        >
-          <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded-lg shadow-md transition-transform duration-300 transform hover:scale-105">
-            Checkout
-          </button>
-        </StripeCheckout>
-      </div>
-    </div>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="large"
+                  sx={{ ml: 2 }}
+                >
+                  Checkout
+                </Button>
+              </StripeCheckout>
+            </Grid>
+          </Grid>
+        </Box>
+      </Paper>
+    </Container>
   );
 }

@@ -3,7 +3,7 @@ import { Client, Account, ID , Databases , Query } from "appwrite";
 const appwriteUrl="https://cloud.appwrite.io/v1"
 const appwriteProjectId = "66922978002c1a570184"
 const food_Database_id = "66aa157800185f4cebd0"
-const food_collection_id = "66aa15830027d9bc6607"
+const food_collection_id = "66dcbb2e0005b13b6afc"
 
 export class CartService {
     client = new Client();
@@ -22,6 +22,24 @@ export class CartService {
     async addtocart(email, dishname, price) {
         try {
             const fooddata = await this.databases.createDocument(
+                food_Database_id,
+                food_collection_id,
+                ID.unique(),
+                {
+                    email:email,
+                    DishName:dishname,
+                    Price:price
+                }
+            );
+            
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async UpdateCart(email, dishname, price) {
+        try {
+            const fooddata = await this.databases.updateDocument(
                 food_Database_id,
                 food_collection_id,
                 ID.unique(),

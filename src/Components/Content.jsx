@@ -30,7 +30,9 @@ export default function Content() {
     if (user) {
       console.log(user.email);
       console.log(dishName);
-      await cartService.addtocart(user.email, dishName, price);
+      console.log(Math.ceil(Number(price)));
+      await cartService.addtocart(user.email, dishName, Math.ceil(Number(price)));
+      console.log("item added sucessfully")
     } else {
       alert("You are not logged in.");
     }
