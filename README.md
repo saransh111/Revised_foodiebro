@@ -60,8 +60,10 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 
 ![5](https://github.com/user-attachments/assets/659a872f-c3f2-4fc4-93a4-09d20da7efa4)
 
-![6](https://
+![6](https://github.com/user-attachments/assets/47e8cb1f-ee7f-459c-b138-8ecaa1daeead)
+
 [7](https://github.com/user-attachments/assets/ce92fa30-00fa-4403-8d67-0715e030353a)
+
 ![8](https://github.com/user-attachments/assets/c960613f-b2f9-4849-b12d-42116c5d149b)
 
 thub.com/user-attachments/assets/54272243-3be6-43de-9306-ff03078f684c)
