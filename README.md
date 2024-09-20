@@ -45,11 +45,26 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 
 
 # Architecture
-![1](images/9.PNG)
+![9](https://github.com/user-attachments/assets/57a7493b-56a8-46ce-83aa-fd6155f24736)
+
 
 # Results
 
-![1](images/1.PNG)![1](images/2.PNG)![1](images/3.PNG)![1](images/4.PNG)![1](images/5.PNG)![1](images/6.PNG)![1](images/7.PNG)![1](images/8.PNG)
+![1](https://github.com/user-attachments/assets/f812991d-947f-464b-a85f-0acb742a9a6d)
+
+![2](https://github.com/user-attachments/assets/f0863ff0-e2c0-4ced-a6a3-58527bb68ab6)
+
+![3](https://github.com/user-attachments/assets/68cfec9d-f1a3-416b-b26f-83c1282b218a)
+
+![4](https://github.com/user-attachments/assets/20b94671-c7e9-4629-866e-0abc89e59e5b)
+
+![5](https://github.com/user-attachments/assets/659a872f-c3f2-4fc4-93a4-09d20da7efa4)
+
+![6](https://
+[7](https://github.com/user-attachments/assets/ce92fa30-00fa-4403-8d67-0715e030353a)
+![8](https://github.com/user-attachments/assets/c960613f-b2f9-4849-b12d-42116c5d149b)
+
+thub.com/user-attachments/assets/54272243-3be6-43de-9306-ff03078f684c)
 
 ## Learn More
 
